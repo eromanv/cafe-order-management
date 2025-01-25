@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total Revenue</title>
+</head>
+<body>
+    <h1>Выручка</h1>
+    <p>Общая выручка по оплаченным заказам: {{ total_revenue }} ₽</p>
+    <a href="{% url 'order_list' %}">Вернуться к списку заказов</a>
+</body>
+</html>

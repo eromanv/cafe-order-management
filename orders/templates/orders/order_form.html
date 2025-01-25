@@ -1,0 +1,55 @@
+{% load static %}
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Form</title>
+    {% bootstrap_css %}
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">{% if form.instance.id %}Изменить заказ #{{ form.instance.id }}{% else %}Новый заказ{% endif %}</h1>
+        <form method="POST" class="needs-validation" novalidate>
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+            <div class="form-group">
+                <label for="table_number">Номер стола:</label>
+                <input type="number" class="form-control" id="table_number" name="table_number" value="{{ form.instance.table_number|default:'' }}" required>
+                {% if form.table_number.errors %}
+                <div class="invalid-feedback">{{ form.table_number.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Поле для ввода JSON -->
+            <div class="form-group">
+                <label for="items">Позиции (JSON формат):</label>
+                <textarea class="form-control" id="items" name="items" rows="4" required>{{ form.items.value|default:""|safe }}</textarea>
+                {% if form.items.errors %}
+                <div class="invalid-feedback">{{ form.items.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="status">Статус:</label>
+                <select class="form-control" id="status" name="status">
+                    <option value="pending" {% if form.instance.status == 'pending' %}selected{% endif %}>В ожидании</option>
+                    <option value="ready" {% if form.instance.status == 'ready' %}selected{% endif %}>Готово</option>
+                    <option value="paid" {% if form.instance.status == 'paid' %}selected{% endif %}>Оплачено</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">{% if form.instance.id %}Сохранить изменения{% else %}Создать заказ{% endif %}</button>
+                <a href="{% url 'order_list' %}" class="btn btn-secondary">Вернуться к списку заказов</a>
+            </div>
+        </form>
+    </div>
+    {% bootstrap_javascript jquery=1 %}
+</body>
+</html>

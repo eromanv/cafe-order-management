@@ -1,0 +1,56 @@
+{% load static %}
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Detail</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% bootstrap_css %}
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="mb-0">Детали заказа</h1>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th class="w-25">ID заказа</th>
+                        <td>{{ order.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Номер стола</th>
+                        <td>{{ order.table_number }}</td>
+                    </tr>
+                    <tr>
+                        <th>Позиции</th>
+                        <td>
+                            <ul class="list-group">
+                                {% for item in order.items %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ item.name }}
+                                        <span class="badge badge-primary badge-pill">{{ item.price }} ₽</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Итоговая сумма</th>
+                        <td>{{ order.total_price }} ₽</td>
+                    </tr>
+                    <tr>
+                        <th>Статус</th>
+                        <td><span class="badge badge-{% if order.status == 'paid' %}success{% elif order.status == 'ready' %}warning{% else %}info{% endif %}">{{ order.status }}</span></td>
+                    </tr>
+                </table>
+                <a href="{% url 'order_list' %}" class="btn btn-primary">Вернуться к списку заказов</a>
+            </div>
+        </div>
+    </div>
+    {% bootstrap_javascript jquery=1 %}
+</body>
+</html>
