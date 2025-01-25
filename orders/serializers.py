@@ -4,10 +4,12 @@ from .models import Order
 
 class OrderSerializer(serializers.ModelSerializer):
     status_display = serializers.CharField(source="get_status_display", read_only=True)
+
     def validate_items(self, value):
         if not value:
             raise serializers.ValidationError("Список продуктов пустой.")
         return value
+
     class Meta:
         model = Order
         fields = [

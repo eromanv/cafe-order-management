@@ -1,4 +1,3 @@
-import json
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Order
 from .forms import OrderForm
@@ -31,7 +30,15 @@ def order_detail(request, order_id):
     Отображает детали конкретного заказа.
     """
     order = get_object_or_404(Order, id=order_id)
-    return render(request, "orders/order_detail.html", {"order": order})
+
+    return render(
+        request,
+        "orders/order_detail.html",
+        {
+            "order": order,
+            "status_choices": Order.STATUS_CHOICES,
+        },
+    )
 
 
 def order_create(request):
@@ -43,8 +50,8 @@ def order_create(request):
         if form.is_valid():
             try:
                 order = form.save(commit=False)
-                order.status = "pending" 
-                order.save() 
+                order.status = "pending"
+                order.save()
                 logger.info(f"Order created: {order.id}")
                 return redirect("order_list")
             except Exception as e:
@@ -58,9 +65,6 @@ def order_create(request):
 
 
 def order_update(request, order_id):
-    """
-    Обновляет существующий заказ. Если метод запроса POST, сохраняет изменения и перенаправляет на список заказов.
-    """
     order = get_object_or_404(Order, id=order_id)
     if request.method == "POST":
         form = OrderForm(request.POST, instance=order)
@@ -74,8 +78,8 @@ def order_update(request, order_id):
                 form.add_error(None, f"Error updating order: {str(e)}")
     else:
         form = OrderForm(instance=order)
-        # Преобразуем данные в JSON строку для отображения
-        form.initial["items"] = json.dumps(order.items, ensure_ascii=False, indent=2)
+        # Передаем непосредственно Python объект
+        form.initial["items"] = order.items
     return render(request, "orders/order_form.html", {"form": form})
 
 

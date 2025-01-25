@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Total Revenue</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Выручка</h1>
-    <p>Общая выручка по оплаченным заказам: {{ total_revenue }} ₽</p>
-    <a href="{% url 'order_list' %}">Вернуться к списку заказов</a>
-</body>
-</html>
+    <div class="container mt-5">
+        <h1 class="display-4 mb-4">Выручка</h1>
+        <p class="lead mb-4">Общая выручка по оплаченным заказам: <span class="font-weight-bold">{{ total_revenue }} ₽</span></p>
+        <a href="{% url 'order_list' %}" class="btn btn-primary">Вернуться к списку заказов</a>
+    </div>

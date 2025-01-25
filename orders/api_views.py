@@ -14,7 +14,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         filters.SearchFilter,
         filters.OrderingFilter,
     ]
-    
+
     filterset_fields = ["status", "table_number"]
     search_fields = ["table_number", "status"]
     ordering_fields = ["id", "table_number", "total_price"]
