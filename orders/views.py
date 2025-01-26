@@ -43,7 +43,8 @@ def order_detail(request, order_id):
 
 def order_create(request):
     """
-    Создает новый заказ. Если метод запроса POST, сохраняет заказ и перенаправляет на список заказов.
+    Создает новый заказ. Если метод запроса POST, сохраняет заказ
+    и перенаправляет на список заказов.
     """
     if request.method == "POST":
         form = OrderForm(request.POST)
@@ -78,14 +79,14 @@ def order_update(request, order_id):
                 form.add_error(None, f"Error updating order: {str(e)}")
     else:
         form = OrderForm(instance=order)
-        # Передаем непосредственно Python объект
         form.initial["items"] = order.items
     return render(request, "orders/order_form.html", {"form": form})
 
 
 def order_delete(request, order_id):
     """
-    Удаляет существующий заказ. Если метод запроса POST, удаляет заказ и перенаправляет на список заказов.
+    Удаляет существующий заказ. Если метод запроса POST,
+    удаляет заказ и перенаправляет на список заказов.
     """
     order = get_object_or_404(Order, id=order_id)
     if request.method == "POST":

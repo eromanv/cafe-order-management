@@ -14,13 +14,10 @@ class OrderForm(forms.ModelForm):
     def clean_items(self):
         items = self.cleaned_data.get("items")
         try:
-            # Если получили строку, пробуем её распарсить
             if isinstance(items, str):
                 items_data = json.loads(items)
             else:
                 items_data = items
-
-            # Валидация структуры
             if not isinstance(items_data, list):
                 raise forms.ValidationError("JSON должен быть списком")
 
@@ -36,6 +33,6 @@ class OrderForm(forms.ModelForm):
                 except (TypeError, ValueError):
                     raise forms.ValidationError("Price должен быть числом")
 
-            return items_data  # Возвращаем Python объект, а не JSON строку
+            return items_data
         except json.JSONDecodeError as e:
             raise forms.ValidationError(f"Неверный формат JSON: {str(e)}")
